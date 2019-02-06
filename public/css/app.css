@@ -1,0 +1,41 @@
+.image-md {
+
+    max-width: 50%;
+    max-height: 50%;
+    border-radius: 10%;
+}
+
+.container {
+
+    margin-top: 10px;
+}
+
+.logo {
+
+    max-width: 80px;
+    margin-bottom: 7px;
+}
+
+.fa-star {
+
+    color: goldenrod;
+}
+
+.avatar {
+
+    max-width: 128px;
+    max-height: 128px;
+    border-radius: 50%;
+}
+
+.avatar.avatar-medium {
+
+    max-width: 64px;
+    max-height: 64px;
+}
+
+.avatar.avatar-mini {
+
+    max-width: 24px;
+    max-height: 24px;
+}

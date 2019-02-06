@@ -37,16 +37,16 @@ class AppFixtures extends Fixture
         $this->listFormation = [];
         $this->listExercice = [];
 
-        $this->createUser("Egan", "Lecocq", "e.lecocq@students.ephec.be")
-             ->createUser("Guillaume", "Wyart", "g.wyart@students.ephec.be")
-             ->createUser("Lucie", "Hermand", "l.hermand@students.ephec.be")
-             ->createUser("Arno", "Godart", "a.godart@students.ephec.be")
-             ->createUser("Adrien", "Nini", "a.ninipereira@students.ephec.be")
-             ->createUser("Robin", "Gielen", "r.gielen@students.ephec.be")
-             ->createUser("Fabian", "Descampe", "f.descampe@students.ephec.be")
-             ->createUser("Simon", "Fauconnier", "s.fauconnier@students.ephec.be")
-             ->createUser("Sebastien", "Raemdonck", "s.raemdonck@students.ephec.be")
-             ->createUser("Thomas", "Feyereisen", "t.feyereisen@students.ephec.be");
+        $this->createUser("Egan", "Lecocq", "e.lecocq@students.ephec.be", "/image/egan_lecocq.jpg")
+             ->createUser("Guillaume", "Wyart", "g.wyart@students.ephec.be", "/image/guillaume_wyart.jpg")
+             ->createUser("Lucie", "Hermand", "l.hermand@students.ephec.be", "/image/lucie_hermand.jpg")
+             ->createUser("Arno", "Godart", "a.godart@students.ephec.be", "/image/arno_godart.jpg")
+             ->createUser("Adrien", "Nini", "a.ninipereira@students.ephec.be", "/image/adrien_nini.jpg")
+             ->createUser("Robin", "Gielen", "r.gielen@students.ephec.be", "/image/robin_gielen.jpg")
+             ->createUser("Fabian", "Descampe", "f.descampe@students.ephec.be", "/image/fabian_descampe.jpg")
+             ->createUser("Simon", "Fauconnier", "s.fauconnier@students.ephec.be", "/image/simon_fauconnier.jpg")
+             ->createUser("Sebastien", "Raemdonck", "s.raemdonck@students.ephec.be", "/image/sebastien_raemdonck.jpg")
+             ->createUser("Thomas", "Feyereisen", "t.feyereisen@students.ephec.be", "/image/thomas_feyereisen.jpg");
 
         $this->createStudent(0)
              ->createStudent(1)
@@ -102,13 +102,14 @@ class AppFixtures extends Fixture
         }
     }
 
-    private function createUser($name, $lastName, $email) {
+    private function createUser($name, $lastName, $email, $image) {
 
         $user = new User();
         $hash = $this->encoder->encodePassword($user, 'password');
         $user->setName($name)
              ->setLastName($lastName)
              ->setEmail($email)
+             ->setImage($image)
              ->setHash($hash);
 
         $this->listUser[] = $user;
@@ -136,12 +137,12 @@ class AppFixtures extends Fixture
     private function createFormation($coach) {
 
         $formation = new Formation();
-        $titre = $this->faker->sentence();
+        $titre = $this->faker->sentence(6);
         $introduction = join(", ", $this->faker->paragraphs(3));
 
         $formation-> setTitre($titre)
                   -> setIntroduction($introduction)
-                  -> setImage("https://placehold.it/1300x500")
+                  -> setImage("https://placehold.it/200x100")
                   ->setCoach($coach);
 
         $this->listFormation[] = $formation;
@@ -169,7 +170,7 @@ class AppFixtures extends Fixture
     private function createComment($formation) {
 
         $comment = new Comment();
-        $note = mt_rand(0, 10);
+        $note = mt_rand(0, 5);
         $content = join(", ", $this->faker->paragraphs(3));
 
         $comment->setNote($note)

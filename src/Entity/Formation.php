@@ -61,6 +61,17 @@ class Formation
         $this->students = new ArrayCollection();
     }
 
+    public function getAvgRatings() {
+
+        $sum = array_reduce($this->comments->toArray(), function($total, $comment) {
+            return $total + $comment->getNote();
+        }, 0);
+        if(count($this->comments) > 0) {
+            return $moyenne = $sum / count($this->comments);
+        }
+        return 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

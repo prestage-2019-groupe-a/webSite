@@ -19,6 +19,17 @@ class FormationRepository extends ServiceEntityRepository
         parent::__construct($registry, Formation::class);
     }
 
+    public function findBestFormations($limit) {
+        return $this->createQueryBuilder('f')
+                    ->select('f as formation, AVG(c.note) as avgRating')
+                    ->join('f.comments', 'c')
+                    ->groupBy('f')
+                    ->orderBy('avgRating', 'DESC')
+                    ->setMaxResults($limit)
+                    ->getQuery()
+                    ->getResult();
+    }
+
     // /**
     //  * @return Formation[] Returns an array of Formation objects
     //  */
