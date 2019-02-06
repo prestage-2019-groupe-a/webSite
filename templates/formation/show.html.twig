@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ formation.titre }} {% endblock %}
+
+{% block body %}
+    <div class="ad-title" style="background-image: url({{ formation.image }})">
+        <div class="container pb-3">
+            <h1>{{ formation.titre }}</h1>
+            <p>{{ formation.introduction }}</p>
+            <a href="#" class="btn btn-primary">S'inscrire</a>
+            {% if app.user and app.user == formation.coach %}
+            <a href="#" class="btn btn-secondary">Modifier la formation</a>
+            <a href="#" class="btn btn-danger">Supprimer la formation</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <h2 class="mb-3">Exercices de cette formation :</h2>
+                {% for exercice in formation.exercices %}
+                    <div class="bg-dark rounded mb-3 py-3 px-3">
+                        <h4>{{ exercice.title }}</h4>
+                        <hr>
+                        <blockquote>
+                            {{ exercice.content }}
+                        </blockquote>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col">
+            {% set user = formation.coach.user %}
+                <div class="row mb-3 align-items-center">
+                    <div class="col-4">
+                        <a href="#">
+                            <img src="{{ user.image }}" class="avatar avatar-medium" alt="Avatar de {{ user.fullName }}">
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a href="#">
+                            <h3>{{ user.fullName }}</h3>
+                        </a>
+                        <span class="badge badge-primary">{{ formation.coach.formations | length }} formations</span>
+                    </div>
+                </div>
+                {% if formation.comments | length > 0 %}
+                    <h2 class="mb-3">Commentaires des étudiants :</h2>
+                    <div class="alert alert-info">
+                        <h4 class="alert-heading text-center">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    Note globale donnée par les étudiants
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    {% include 'common/rating.html.twig' with {'rating': formation.avgRatings} %}
+                                    <br>
+                                    <small>calculé sur {{ formation.comments | length }} avis</small>
+                                </div>
+                            </div>
+                        </h4>
+                    </div>
+                    {% for comment in formation.comments %}
+                        {% set writer = comment.writer.user %}
+                        <div class="bg-dark rounded mb-3 py-3 px-3">
+                            <strong>{{ writer.name }}</strong> a dit :
+                            <blockquote>
+                                {{ comment.content }}
+                            </blockquote>
+                            <strong>Note donnée : </strong>
+                            {% include 'common/rating.html.twig' with {'rating': comment.note} %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <h2>Cette formation n'a pas encore reçu de commentaire</h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

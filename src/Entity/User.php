@@ -3,10 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ *  fields={"email"},
+ *  message="Cette adresse email existe déjà")
  */
 class User implements UserInterface
 {
@@ -19,23 +25,39 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez rentrer votre prénom")
+     * @Assert\Length(min=3, minMessage="Votre prénom doit faire 3 caractères minimum")
+     * @Assert\Length(max=20, maxMessage="Votre prénom doit faire 20 caractères maximum")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez rentrer votre nom de famille")
+     * @Assert\Length(min=3, minMessage="Votre nom de famille doit faire 3 caractères minimum")
+     * @Assert\Length(max=20, maxMessage="Votre nom de famille doit faire 20 caractères maximum")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez rentrer votre email")
+     * @Assert\Email(message="Email invalide")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez rentrer votre mot de passe")
+     * @Assert\Length(min=8, minMessage="Le mot de passe doit faire au moins 8 caractères")
+     * @Assert\Length(max=30, maxMessage="Le mot de passe peut faire 30 caractères maximum")
      */
     private $hash;
+
+    /**
+     * @Assert\EqualTo(propertyPath="hash", message="Les mots de passe ne correspondent pas")
+     */
+    private $confirmPassword;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Student", mappedBy="user", cascade={"persist", "remove"})
@@ -55,6 +77,17 @@ class User implements UserInterface
     public function getFullName() {
 
         return $this->name . " " . $this->lastName;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist() {
+
+        if(empty($this->image)) {
+
+            $this->image = "/image/defaultUser.png";
+        }
     }
 
     public function getRoles() {
@@ -172,6 +205,16 @@ class User implements UserInterface
     {
         $this->image = $image;
 
+        return $this;
+    }
+
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirmPassword;
+    }
+    public function setConfirmPassword(string $confirmPassword): self
+    {
+        $this->confirmPassword = $confirmPassword;
         return $this;
     }
 }

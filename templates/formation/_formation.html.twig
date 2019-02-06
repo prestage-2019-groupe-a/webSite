@@ -1,0 +1,27 @@
+{% set url = path('formation_show', {'id': formation.id}) %}
+
+<div class="col-md-4">
+    <div class="card bg-dark mb-3">
+        <div class="card-header text-center">
+            {% if formation.comments | length > 0 %}
+                {% include 'common/rating.html.twig' with {'rating': formation.avgRatings} %}
+            {% else %}
+                <small>Pas encore noté</small>
+            {% endif %}
+        </div>
+        <a href="{{ url }}">
+            <img src="{{ formation.image }}" alt="Image de la formation" style="width: 100%; display: block">
+        </a>
+        <div class="card-body">
+            <h4 class="card-title">
+                <a href="{{ url }}">
+                    {{ formation.titre }}
+                </a>
+            </h4>
+            <p class="card-text">
+                {{ formation.introduction }}
+            </p>
+            <a href="{{ url }}" class="btn btn-primary float-right">En savoir plus</a>
+        </div>
+    </div>
+</div>

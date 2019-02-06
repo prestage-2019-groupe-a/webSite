@@ -142,7 +142,7 @@ class AppFixtures extends Fixture
 
         $formation-> setTitre($titre)
                   -> setIntroduction($introduction)
-                  -> setImage("https://placehold.it/200x100")
+                  -> setImage("https://placehold.it/1300x500")
                   ->setCoach($coach);
 
         $this->listFormation[] = $formation;

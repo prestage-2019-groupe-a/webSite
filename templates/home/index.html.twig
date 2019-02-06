@@ -13,31 +13,7 @@
     <div class="row">
         {% for data in formations %}
         {% set formation = data.formation %}
-        <div class="col-md-4">
-            <div class="card bg-dark mb-3">
-                <div class="card-header text-center">
-                    {% if formation.comments | length > 0 %}
-                        {% include 'common/rating.html.twig' with {'rating': data.avgRating} %}
-                    {% else %}
-                        <small>Pas encore noté</small>
-                    {% endif %}
-                </div>
-                <a href="#">
-                    <img src="{{ formation.image }}" alt="Image de la formation" style="width: 100%; display: block">
-                </a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">
-                            {{ formation.titre }}
-                        </a>
-                    </h4>
-                    <p class="card-text">
-                        {{ formation.introduction }}
-                    </p>
-                    <a href="#" class="btn btn-primary float-right">En savoir plus</a>
-                </div>
-            </div>
-        </div>
+            {% include 'formation/_formation.html.twig' %}
         {% endfor %}
     </div>
 </div>

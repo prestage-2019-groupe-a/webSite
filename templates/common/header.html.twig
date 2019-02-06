@@ -8,6 +8,9 @@
 
   <div class="collapse navbar-collapse" id="navbarColor02">
     <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+            <a href="{{ path("formation_index") }}" class="nav-link">Liste cours</a>
+        </li>
     </ul>
     <ul class="navbar-nav ml-auto">
       {% if app.user %}
@@ -25,12 +28,22 @@
         </li>
       {% else %}
         <li class="nav-item">
-            <a href="#" class="nav-link">Inscription</a>
+            <a href="{{ path("account_register") }}" class="nav-link">Inscription</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Connexion</a>
+            <a href="{{ path("account_login") }}" class="nav-link">Connexion</a>
         </li>
       {% endif %}
     </ul>
   </div>
 </nav>
+
+{% for label, messages in app.flashes %}
+    <div class="container">
+        <div class="alert alert-{{ label }}">
+            {% for message in messages %}
+                <p>{{ message | raw }}</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
